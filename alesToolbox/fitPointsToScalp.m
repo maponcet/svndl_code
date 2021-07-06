@@ -61,10 +61,14 @@ uplim  = [  100*sf  100*sf  100*sf  pi/2  pi/2  pi/2];
 initial = [0 0 0 0 0 0];
 
 fig = figure;
-N = get(patch('vertices',scalp.rr,'faces',scalp.tris(:,[3 2 1])),'vertexnormals')';
+camlight
+pp = patch('vertices',scalp.rr,'faces',scalp.tris(:,[3 2 1]),'FaceLighting','gouraud');
+pause(0.5)
+N = get(pp,'VertexNormals')';
+% N = get(patch('vertices',scalp.rr,'faces',scalp.tris(:,[3 2 1])),'vertexnormals')';
 close(fig)
 N = N ./ repmat(sqrt(sum(N.^2)),3,1);
-
+N = double(N);
 
 %[params fval] = fminsearch(@translate,[0 0 0 0],optns,v1fMRI,VEP);
 %[params fval EXITFLAG, OUTPUT,LAMBDA,GRAD,HESSIAN] = fmincon(@rotcostfunc2,initial,[],[],[],[],lowlim,uplim,[],optns, ...
@@ -92,7 +96,7 @@ end
 
  params
  
- movedElec = rigidRotate(params,electrodes);
+ movedPoints = rigidRotate(params,electrodes);
 
  
  params(1:3) = params(1:3)./sf;
@@ -120,9 +124,9 @@ rotationMtx = makeRotMtx(params);
 
 
 
-[kE,dE] = nearpoints(movedElec', stationaryPoints');
+[kE,dE] = nearpoints(movedPoints', stationaryPoints');
 
-signedDist = dot(  (movedElec - stationaryPoints(kE,:))', N(:,kE));
+signedDist = dot(  (movedPoints - stationaryPoints(kE,:))', N(:,kE));
 mean(signedDist)
 
 elec2plot = 1:size(electrodes,1); 1:128;[17 75];
@@ -167,7 +171,7 @@ end
 axLim = axis;
 
 %title(['Electrodes fit to within: ' num2str(max(dist/2)) ' mm'])
-text(axLim(2),axLim(3),axLim(6),['Electrodes fit to within: ' num2str(max(dist/2),2) ' mm']);
+% text(axLim(2),axLim(3),axLim(6),['Electrodes fit to within: ' num2str(max(dist/2),2) ' mm']);
 
 %disp('test')
 %rotationMtx = params;
@@ -207,12 +211,12 @@ function dist = rotcostfunc(params,stationaryPoints,movablePoints)
     
 function dist = rotcostfunc2(params,stationaryPoints,electrodes,headshape,N)
 
-movedElec = rigidRotate(params,electrodes);
+movedPoints = rigidRotate(params,electrodes);
 
 
-[kE,dE] = nearpoints(movedElec', stationaryPoints');
+[kE,dE] = nearpoints(movedPoints', stationaryPoints');
 
-signedDist = dot(  (movedElec - stationaryPoints(kE,:))', N(:,kE));
+signedDist = dot(  (movedPoints - stationaryPoints(kE,:))', N(:,kE));
 %    SSE = sum(signedDist-mean(signedDist)).^2;
 
 

@@ -257,8 +257,8 @@ for iSubj = 3:length(subjectList),
         
         thisWave = thisTopo*thisWave';
         
-        thisSin = real(thisTopo*harmCoeff);
-        thisCos = imag(thisTopo*harmCoeff);
+        thisCos = real(thisTopo*harmCoeff);
+        thisSin = imag(thisTopo*harmCoeff);
         thisAmp = abs(thisTopo*harmCoeff);
 
 

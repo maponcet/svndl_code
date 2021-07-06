@@ -75,7 +75,7 @@ for iSubj = 3:length(subjectList),
 
     
     
-    PDname = dir(fullfile(projectDir,subjId,'Exp_MATL_*'));
+    PDname = dir(fullfile(projectDir,subjId,'Exp_*'));
 
     if isempty(PDname)
         display(['For: ' subjId ' ---- Cannot find PowerDiva MATLAB export directory. Looking for Text Export'])

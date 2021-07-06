@@ -4,7 +4,9 @@ function [] = interactiveTopoSpecPlot(data,allFreqs,sigFreqs)
 % helpful help here
 %
 
-
+cfg.layout = 'biosemi128.lay';
+tmpcfg     = removefields(cfg, 'inputfile');
+cfg.layout = ft_prepare_layout(tmpcfg);
 
 %Do some sanity checks here
 %if wrong
@@ -27,7 +29,8 @@ end
 iElec = 75;
 iFr = 1;
 topoAx = subplot(10,1,1:8);
-topoH = plotOnEgi(squeeze(data(1,:)));
+topoH = plotTopo(squeeze( data(1,:)),cfg.layout);
+% topoH = plotOnEgi(squeeze(data(1,:)));
 set(gcf,'KeyPressFcn',@keyInput)
 colormap(hot);
 axis off;

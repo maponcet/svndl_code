@@ -4,7 +4,8 @@ function [V,vX,vY,vZ] = readDefaultMri(subjId)
 
 anatDir = getpref('mrCurrent','AnatomyFolder');
 
-vAnatFilename=fullfile(anatDir,subjId,'vAnatomy.dat');
+%vAnatFilename=fullfile(anatDir,subjId,'vAnatomy.dat');
+vAnatFilename=fullfile(anatDir,subjId,'T1.nii');
 
 if ~exist(vAnatFilename,'file')
     error(['Cannot find anatomy file: ' vAnatFilename]);

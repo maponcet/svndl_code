@@ -1,4 +1,5 @@
 function [pout, vout, viout, facevout, faceiout]  = select3d(obj)
+% patched for matlab version 2017a
 %SELECT3D(H) Determines the selected point in 3-D data space.
 %  P = SELECT3D determines the point, P, in data space corresponding 
 %  to the current selection position. P is a point on the first 
@@ -172,9 +173,21 @@ end
 %     line('parent',ax1,'xdata',xcp(1,2),'ydata',xcp(2,2),'zdata',0,'marker','o','markerfacecolor','r','erasemode','xor');
 % end
 
-% Transform vertices from data space to pixel space
-xvert = local_Data2PixelTransform(ax,vert)';
-xcp = local_Data2PixelTransform(ax,cp')';
+
+% Transform vertices from data space to pixel space (fixed for Matlab>14b
+persistent convertDataSpaceCoordsToViewerCoords;
+
+if verLessThan('matlab','8.4.0')
+    xvert = local_Data2PixelTransform(ax,vert)';
+    xcp = local_Data2PixelTransform(ax,cp')';
+else
+    if isempty(convertDataSpaceCoordsToViewerCoords)
+        convertDataSpaceCoordsToViewerCoords = specgraphhelper('convertDataSpaceCoordsToViewerCoords');
+    end
+
+    xvert = convertDataSpaceCoordsToViewerCoords(axchild, vert');
+    xcp = convertDataSpaceCoordsToViewerCoords(ax, cp);
+end
 
 % Translate vertices so that the selection point is at the origin.
 xvert(1,:) = xvert(1,:) - xcp(1,2);
@@ -347,3 +360,6 @@ xvert(ind,:) = 0; % set pixel to 0
 
 p(:,1) = xvert(:,1) ./ w;
 p(:,2) = xvert(:,2) ./ w;
+
+
+

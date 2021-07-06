@@ -136,6 +136,9 @@ for iSubj = 1:length(dirNames)
         if ~isfield(thisCondData,'nTrl')
             thisCondData.nTrl = 1;
         end
+        if ~isfield(thisCondData,'Cov')
+            thisCondData.Cov = eye(thisCondData.nCh);
+        end
         
         data.trialsPerCond(iSubj,iCond) = thisCondData.nTrl;
         data.Spec(iSubj,iCond,:,:) = complex(thisCondData.Cos,thisCondData.Sin);
@@ -205,22 +208,23 @@ time2Start = str2double(get(handles.time2Start,'String'));
 time2Stop = str2double(get(handles.time2Stop,'String'));
 
 %Validate frequency inputs (str2double returns NaN on fail.
-if isnan(f1Start)
+% replace isnan with 
+if isempty(f1Start) % isnan(f1Start)  
     f1Start = handles.data.xFrqs(handles.data.i1F1+1);
     set(handles.f1Start,'String',num2str(f1Start));
 end
 
-if isnan(f1Stop)
+if isempty(f1Stop)
     f1Stop = handles.data.xFrqs(end);
     set(handles.f1Stop,'String',num2str(f1Stop));
 end
 
-if isnan(f2Start)
+if isempty(f2Start) 
     f2Start = handles.data.xFrqs(handles.data.i1F2+1);
     set(handles.f2Start,'String',num2str(f2Start));
 end
 
-if isnan(f2Stop)
+if isempty(f2Stop) 
     f2Stop = handles.data.xFrqs(end);
     set(handles.f2Stop,'String',num2str(f2Stop));
 end
