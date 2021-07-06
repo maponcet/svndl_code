@@ -14,7 +14,9 @@ export FSLOUTPUTTYPE NIFTI_GZ
 
 export SUBJECTS_DIR=/Volumes/MRI/anatomy/FREESURFER_SUBS/
 
-export MNE_ROOT=/Volumes/MRI/toolbox/MNESuite/mne_osx
+export MNE_ROOT=/Applications/MNE-2.7.0-3106-MacOSX-i386
+export MATLAB_ROOT=/Applications/MATLAB_R2019b.app
+source $MNE_ROOT/bin/mne_setup_sh
 
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 

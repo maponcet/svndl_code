@@ -197,7 +197,8 @@ totalDx = [newDxLeft (newDxRight+double(srcSpace(1).nuse))];
 
 
 Gfree = fwd.sol.data;
-Gfree = Gfree - repmat(mean(Gfree),128,[]);
+% Gfree = Gfree - repmat(mean(Gfree),128,[]);
+Gfree = Gfree - repmat(mean(Gfree),[128 1]);
 
 G = zeros(size(Gfree,1),size(Gfree,2)/3);
 srcOri = [oriLeft; oriRight];
